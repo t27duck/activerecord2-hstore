@@ -14,8 +14,7 @@ ActiveRecord::Base.connection.execute("CREATE EXTENSION IF NOT EXISTS hstore")
 ActiveRecord::Base.connection.execute("ALTER TABLE my_hstores ADD COLUMN some_field hstore")
 
 class MyHstore < ActiveRecord::Base
-  hstore_scopes :some_field, :key
-  hstore_column :some_field
+  hstore_column :some_field, [:key]
 end
 
 describe Hstore do

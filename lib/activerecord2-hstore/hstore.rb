@@ -1,29 +1,28 @@
 module Hstore
   module ActiveRecord
-    # USAGE: When included in an ActiveRecord model, you can create a set of named scopes
-    # for a HSTORE Postgresql field-key combination in the table.
-    #
-    # You can also mark a key as a hstore column to create getting/setter methods that return
-    # and take a hash (respectively)
-    #
-    # class Foo < ActiveRecord::Base
-    #   include Hstore::ActiveRecord
-    #   hstore_scopes :column_name, :key
-    #   hstore_column :column_name
-    # end
-    #
-    # Foo.column_name_key_eq("bar")
-    # Foo.column_name_key_in([3,"bar","blah"])
-    #
-    # f = Foo.new
-    # f.column_name = {:a => "bar", "b" => "fizz"}
-
+    # Called when included in ActiveRecord. Extends the Extensions module.
     def self.included(base)
       base.extend Extensions
     end
     
     module Extensions
-      def hstore_column(column)
+      # Creates a series of methods and named scopes for a hstore column. This is the primary
+      # method you should use to invoke this gem in a model.
+      #
+      # USAGE IN A MODEL:
+      # class Foo < ActiveRecord::Base
+      #   hstore_column :some_column, [:array_of_possible_keys, :you_may_want, :to_query_on]
+      # end
+      def hstore_column(column, keys=[])
+        create_getter_and_setter(column)
+        create_hstore_key_availability_scopes(column)
+        Array(keys).each{ |key| create_hstore_key_search_scopes(column, key) }
+      end
+
+      # Creates and overrides ActiveRecord's getter and setter methods for the hstore column.
+      # The getter returns a hash. The setter accepts and converts either a hash or a valid
+      # hstore string.
+      def create_getter_and_setter(column)
         define_method column.to_sym do
           read_attribute(column.to_sym).to_s.from_hstore
         end
@@ -32,7 +31,11 @@ module Hstore
           value = value.is_a?(String) ? value : value.to_hstore
           write_attribute(column.to_sym, value)
         end
+      end
 
+      # Creates named scopes for the hstore column allowing you to determine if the column
+      # contains a given key or set of keys.
+      def create_hstore_key_availability_scopes(column)
         named_scope "#{column}_has_key".to_sym, Proc.new{ |key|
           { :conditions => ["#{column} ? :key", {:key => key}] }
         }
@@ -44,7 +47,8 @@ module Hstore
         }
       end
 
-      def hstore_scopes(column, key)
+      # Creates a slew of searchlogic-like named scopes to query for a key on a hstore column
+      def create_hstore_key_search_scopes(column, key)
         named_scope "#{column}_#{key}_eq".to_sym, Proc.new{ |value|
           { :conditions => ["#{column} -> '#{key}' = ?", value.to_s] }
         }

@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Activerecord2::Hstore::VERSION
   s.authors     = ["Tony Drake"]
   s.email       = ["t27duck@gmail.com"]
-  # s.homepage    = ""
+  s.homepage    = "https://github.com/t27duck/activerecord2-hstore"
   s.summary     = %q{Some basic support to help integrate Postgresql's HStore into a Rails 2.3 app}
   s.description = %q{TODO: Write a gem description}
 
