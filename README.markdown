@@ -13,9 +13,9 @@ Requirements (aka boring stuff)
 -------------------------------
 This gem requires:
 * ActiveRecord and ActiveSupport 2.3.x
-* pg 
-* rspec (for running tests)
-* Ruby (Tested on 1.8.7 MRI and REE)
+* pg gem
+* rspec (for running tests, duh)
+* Ruby (Tested on 1.8.7 MRI, 1.9.2, and REE)
 * Postgresql (Tested on 9.1)
 
 Setup (aka more boring stuff)
@@ -51,21 +51,45 @@ You can tell your model infos is a hstore column thusly...
     end
 
 What does that one line get you?
-* A getter that returns the hstore column as a hash...
+*   A getter that returns the hstore column as a hash...
         @peep.infos
         >> {"age" => "25", "haircolor" => "black", "height" => "5'3\"", "likes" => "Cuddling while watching TV"}
-* A setter that takes a hash and converts it to a hstore string (or the method can just take a hstore string)
+*   A setter that takes a hash and converts it to a hstore string (or the method can just take a hstore string)
         @peeps.infos = some_hash
-* These name scopes:
-  * infos\_has\_key (takes a string)
-  * infos\_has\_all\_keys (takes a string or an array of strings)
-  * infos\_has\_any\_keys (takes a string or an array of strings) 
+*   These name scopes:
+    *   infos\_has\_key (takes a string)
+    *   infos\_has\_all\_keys (takes a string or an array of strings)
+    *   infos\_has\_any\_keys (takes a string or an array of strings) 
 
 So what about querying the data in that colum? Well, you can always use the 
 standard condisions key in ActiveRecord's find method and use the proper 
 syntax from the Postgresql documentation. But if you're like me and like 
 using searchlogic, that's not an option. So in the same line in your model,
-you can specifiy some keys you'll [TO BE CONTINUED]
+you can specifiy some keys you'd want to filter by...
+    class Peep < ActiveRecord::Base
+      hstore_column :infos, [:age, :haircolor, :likes]
+    end
+Passing in an array of hstore keys will give you the following named scopes
+to play with...
+*  infos\_age\_eq
+*  infos\_age\_neq
+*  infos\_age\_eq\_any
+*  infos\_age\_neq\_any
+*  infos\_age\_like
+*  infos\_age\_beigns\_with
+*  infos\_age\_ends\_with
+*  (Repeat list for "haircolor" and "likes")
+
+Which means you can then do...
+    Peep.infos_likes_eq("Cuddling while watching TV")
+    Peep.searchlogic(:infos_age_neq => "23")
+
+Running Tests
+-------------
+For the tests to run, it's assumed there is a Postgres database called
+activerecord2\_hstore\_test. The specs will create a test table and populate
+it with data for you. If you want to use a different database, then edit
+spec/hstore\_spec.rb to your liking.
 
 Background / Why make this? / Me Rambling
 -----------------------------------------
@@ -81,7 +105,7 @@ some way to search a hstore field for key with certain values.
 
 To accomplish the first goal, I first needed a way to convert a Postgresql
 hstore string into a Ruby hash and back to a string. I'm using the hash and
-string methods from [softa's gem](https://github.com/softa/activerecord-postgres-hstore)
+string methods from *[softa's gem](https://github.com/softa/activerecord-postgres-hstore)*
 that provides hstore support for ActiveRecord 3. With those methods, I created
 a way for you to tell ActiveRecord what columns are hstore columns and this 
 gem will override the default column getter method to return a hash and the
