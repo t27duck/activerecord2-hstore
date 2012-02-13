@@ -51,15 +51,15 @@ You can tell your model infos is a hstore column thusly...
     end
 
 What does that one line get you?
-*   A getter that returns the hstore column as a hash...
+-   A getter that returns the hstore column as a hash...
         @peep.infos
         >> {"age" => "25", "haircolor" => "black", "height" => "5'3\"", "likes" => "Cuddling while watching TV"}
-*   A setter that takes a hash and converts it to a hstore string (or the method can just take a hstore string)
+-   A setter that takes a hash and converts it to a hstore string (or the method can just take a hstore string)
         @peeps.infos = some_hash
-*   These name scopes:
-    *   infos\_has\_key (takes a string)
-    *   infos\_has\_all\_keys (takes a string or an array of strings)
-    *   infos\_has\_any\_keys (takes a string or an array of strings) 
+-   These name scopes:
+    -   infos\_has\_key (takes a string)
+    -   infos\_has\_all\_keys (takes a string or an array of strings)
+    -   infos\_has\_any\_keys (takes a string or an array of strings) 
 
 So what about querying the data in that colum? Well, you can always use the 
 standard condisions key in ActiveRecord's find method and use the proper 
@@ -71,14 +71,14 @@ you can specifiy some keys you'd want to filter by...
     end
 Passing in an array of hstore keys will give you the following named scopes
 to play with...
-*  infos\_age\_eq
-*  infos\_age\_neq
-*  infos\_age\_eq\_any
-*  infos\_age\_neq\_any
-*  infos\_age\_like
-*  infos\_age\_beigns\_with
-*  infos\_age\_ends\_with
-*  (Repeat list for "haircolor" and "likes")
+-   infos\_age\_eq
+-   infos\_age\_neq
+-   infos\_age\_eq\_any
+-   infos\_age\_neq\_any
+-   infos\_age\_like
+-   infos\_age\_beigns\_with
+-   infos\_age\_ends\_with
+-   (Repeat list for "haircolor" and "likes")
 
 Which means you can then do...
     Peep.infos_likes_eq("Cuddling while watching TV")
