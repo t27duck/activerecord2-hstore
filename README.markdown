@@ -95,6 +95,7 @@ to play with...
 *   (Repeat list for "haircolor" and "likes")
 
 Which means you can then do...
+
     Peep.infos_likes_eq("Cuddling while watching TV")
     Peep.searchlogic(:infos_age_neq => "23")
 
