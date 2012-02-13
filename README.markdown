@@ -35,7 +35,7 @@ hstore column to your table. Here, I'll even give you an example:
 
     ALTER TABLE my_table ADD COLUMN some_field hstore;
 
-I recommend you add an index to that column. Supported indexest BTREE, HASH, 
+I recommend you add an index to that column. Supported indexes are BTREE, HASH, 
 GIST, and GIN. I'll leave you to handle that on your own.
 
 Usage (aka the stuff you care about)
@@ -77,9 +77,11 @@ standard condisions key in ActiveRecord's find method and use the proper
 syntax from the Postgresql documentation. But if you're like me and like 
 using searchlogic, that's not an option. So in the same line in your model,
 you can specifiy some keys you'd want to filter by...
+
     class Peep < ActiveRecord::Base
       hstore_column :infos, [:age, :haircolor, :likes]
     end
+
 Passing in an array of hstore keys will give you the following named scopes
 to play with...
 
@@ -117,7 +119,7 @@ some way to search a hstore field for key with certain values.
 
 To accomplish the first goal, I first needed a way to convert a Postgresql
 hstore string into a Ruby hash and back to a string. I'm using the hash and
-string methods from *[softa's gem](https://github.com/softa/activerecord-postgres-hstore)*
+string methods from **[softa's gem](https://github.com/softa/activerecord-postgres-hstore)**
 that provides hstore support for ActiveRecord 3. With those methods, I created
 a way for you to tell ActiveRecord what columns are hstore columns and this 
 gem will override the default column getter method to return a hash and the
