@@ -26,11 +26,15 @@ Install the gem like you would normally install any gem.
 Enable the hstore extension on the postgres database(s) you wish to use.
 Ether by creating a migration in your project that runs this SQL statement
 or manually running it directly in psql console...
+
     CREATE EXTENSION IF NOT EXISTS hstore;
+
 Instead of me trying to hack ActiveRecord to add an actual hstore column type,
 and risk breaking the universe, just manually write a migration that adds a 
 hstore column to your table. Here, I'll even give you an example:
+
     ALTER TABLE my_table ADD COLUMN some_field hstore;
+
 I recommend you add an index to that column. Supported indexest BTREE, HASH, 
 GIST, and GIN. I'll leave you to handle that on your own.
 
@@ -40,6 +44,7 @@ Now that the boring stuff is out of the way, you need to tell your model that
 you have a hstore column.
 
 Assume you have the following table:
+    
     peeps
     id: integer
     name: string
@@ -54,10 +59,14 @@ You can tell your model infos is a hstore column thusly...
 What does that one line get you?
 
 *   A getter that returns the hstore column as a hash...
+
         @peep.infos
         >> {"age" => "25", "haircolor" => "black", "height" => "5'3\"", "likes" => "Cuddling while watching TV"}
+
 *   A setter that takes a hash and converts it to a hstore string (or the method can just take a hstore string)
+
         @peeps.infos = some_hash
+
 *   These name scopes:
     *   infos\_has\_key (takes a string)
     *   infos\_has\_all\_keys (takes a string or an array of strings)
