@@ -28,6 +28,9 @@ Ether by creating a migration in your project that runs this SQL statement
 or manually running it directly in psql console...
 
     CREATE EXTENSION IF NOT EXISTS hstore;
+    
+**NOTE THAT THE ABOVE SQL WILL ONLY WORK ON POSTGRESQL 9.1 and above. For 
+earlier versions, please consult the documentation for enabling hstore**
 
 Instead of me trying to hack ActiveRecord to add an actual hstore column type,
 and risk breaking the universe, just manually write a migration that adds a 
