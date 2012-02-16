@@ -7,7 +7,7 @@ This is a gem that provides some very basic functionality for working with
 Postgresql's Hstore columns in ActiveRecord 2.
 
 Documentation about the Postgresql Hstore feature can be found 
-[here](http://www.postgresql.org/docs/9.1/static/hstore.html)
+**[here](http://www.postgresql.org/docs/9.1/static/hstore.html)**.
 
 Requirements (aka boring stuff)
 -------------------------------
@@ -99,12 +99,42 @@ Which means you can then do...
     Peep.infos_likes_eq("Cuddling while watching TV")
     Peep.searchlogic(:infos_age_neq => "23")
 
+But Wait, There's More!
+-----------------------
+
+The gem also adds a helper method to the Hash and String objects for converting
+hashes to hstore strings and back again.
+
+These methods were originally implemented in a gem by 
+[softa](https://github.com/softa/activerecord-postgres-hstore) to add hstore
+to ActiveReocord 3 and tweaked slightly for this gem.
+
+Converting a hash into a hstore string that can be used to direclty store data
+in a query...
+
+    {"something something" => "something", :dark => "side"}.to_hstore
+    >> "\"something something\"=>something,dark=>side"
+
+Converting a hstore string that is returned from the database into a hash so
+you can actually do something with it...
+
+    "\"something something\"=>something,dark=>side".from_hstore
+    >> {"something something" => "something", "dark" => "side"}
+
+Note that taking a string from hstore into a hash will produce a hash where its
+keys and values are all strings.
+    
+
 Running Tests
 -------------
 For the tests to run, it's assumed there is a Postgres database called
 activerecord2\_hstore\_test. The specs will create a test table and populate
 it with data for you. If you want to use a different database, then edit
 spec/hstore\_spec.rb to your liking.
+
+Then just run...
+
+    rake spec
 
 Background / Why make this? / Me Rambling
 -----------------------------------------

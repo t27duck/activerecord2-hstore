@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["t27duck@gmail.com"]
   s.homepage    = "https://github.com/t27duck/activerecord2-hstore"
   s.summary     = %q{Some basic support to help integrate Postgresql's HStore into a Rails 2.3 app}
-  s.description = %q{TODO: Write a gem description}
+  s.description = %q{Allows you to mark a column in a model as a HStore column letting you pass in a hash for its setter and retrieve a hash from its getter method. Also provides a series to named scopes for easy querying of data.}
 
   s.rubyforge_project = "activerecord2-hstore"
 
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   # specify any dependencies here; for example:
   s.add_development_dependency "rspec", ">=2.0.0"
-  s.add_dependency "pg"
-  
-  # s.add_runtime_dependency "rest-client"
+  s.add_runtime_dependency "activerecord", "~> 2.3.0"
+  s.add_runtime_dependency "activesupport", "~> 2.3.0"
+  s.add_runtime_dependency "pg"
 end
