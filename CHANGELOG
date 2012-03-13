@@ -1,0 +1,5 @@
+1.0.1
+* Corrected Hash.to_hstore to take into account apostrophes (Thanks, sisk)
+
+1.0.0
+* First release
