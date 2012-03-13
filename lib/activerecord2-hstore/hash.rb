@@ -8,7 +8,7 @@ class Hash
 
     map { |key, value| 
       pair = [key, value].map { |element| 
-        item = element.to_s.gsub(/"/, '\"')
+        item = element.to_s.gsub(/"/, '\"').gsub(/'/, "\'")
         if element.nil?
           'NULL'
         elsif item =~ /[,\s=>]/ || item.blank?

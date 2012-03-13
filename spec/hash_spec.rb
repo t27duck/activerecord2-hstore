@@ -12,6 +12,12 @@ describe Hash do
       {"a b"=>"b"}.to_hstore.should == "\"a b\"=>b"
       {"a b"=>"b c"}.to_hstore.should == "\"a b\"=>\"b c\""
       {"a"=>"b c"}.to_hstore.should == "a=>\"b c\""
+      {"a"=>"'c"}.to_hstore.should == "a=>'c"
+      {"a'f"=>"b'c"}.to_hstore.should == "a'f=>b'c"
+      {"a"=>"b' c"}.to_hstore.should == "a=>\"b' c\""
+      {"a"=>"b 'c"}.to_hstore.should == "a=>\"b 'c\""
+      {"a"=>"b'"}.to_hstore.should == "a=>b'"
+      {"a"=>"'b"}.to_hstore.should == "a=>'b"
     end
     
     it "converts a multiball hash to a hstore string" do
@@ -22,6 +28,8 @@ describe Hash do
       all_should_match({"a"=>"b", "c 1"=>"d"}, [/a=>b/, /\"c 1\"=>d/])
       all_should_match({:a=>:b, "c 1"=>:"d 1"}, [/a=>b/, /\"c 1\"=>\"d 1\"/])
       all_should_match({"a"=>"b", :c=>:d, "e 1"=>"f 1"}, [/a=>b/, /c=>d/, /\"e 1\"=>\"f 1\"/])
+      all_should_match({"a 1"=>"b'1", "c"=>"d"}, [/\"a 1\"=>b'1/, /c=>d/])
+      all_should_match({"a 1"=>"b' 1", "c"=>"d"}, [/\"a 1\"=>\"b' 1\"/, /c=>d/])
     end
 
     def all_should_match(hash, expects)
