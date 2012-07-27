@@ -56,7 +56,7 @@ describe Hstore do
       end
 
       it "handles nil input" do
-        subject.should_receive(:write_attribute)
+        subject.should_receive(:write_attribute).with(:some_field, "")
         subject.some_field = nil
       end
 

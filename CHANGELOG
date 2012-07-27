@@ -1,3 +1,6 @@
+1.0.3
+* Corrected ActiveRecord setter to allow for nil input (again)
+
 1.0.2
 * Corrected ActiveRecord setter to allow for nil input
 
