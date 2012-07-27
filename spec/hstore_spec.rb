@@ -55,6 +55,11 @@ describe Hstore do
         subject.some_field = {:a => :b}
       end
 
+      it "handles nil input" do
+        subject.should_receive(:write_attribute)
+        subject.some_field = nil
+      end
+
       it "can also accept a hstore string instead of a hash" do
         subject.stub(:write_attribute)
         subject.some_field = "a=>b"
