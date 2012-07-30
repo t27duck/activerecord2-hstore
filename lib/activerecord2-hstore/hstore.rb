@@ -28,9 +28,9 @@ module Hstore
         end
 
         define_method "#{column}=".to_sym do |value|
-          value = {}.to_hstore if value.nil?
-          value ||= value.is_a?(String) ? value : value.to_hstore
-          write_attribute(column.to_sym, value)
+          val = {}.to_hstore if value.nil?
+          val ||= value.is_a?(String) ? value : value.to_hstore
+          write_attribute(column.to_sym, val)
         end
       end
 
