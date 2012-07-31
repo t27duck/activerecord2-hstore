@@ -1,3 +1,7 @@
+1.0.4
+* Better fix for passing in nil, string, or hash into ActiveRecord setter (@kwstannard)
+* Additional and improved specs
+
 1.0.3
 * Corrected ActiveRecord setter to allow for nil input (again)
 
@@ -5,7 +9,7 @@
 * Corrected ActiveRecord setter to allow for nil input
 
 1.0.1
-* Corrected Hash.to_hstore to take into account apostrophes (Thanks, sisk)
+* Corrected Hash.to_hstore to take into account apostrophes (@sisk)
 
 1.0.0
 * First release
