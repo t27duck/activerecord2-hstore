@@ -50,8 +50,8 @@ describe Hstore do
     end
 
     describe "setter method" do
-      it "uses ActiveRecord's write_attribute" do
-        subject.should_receive(:write_attribute)
+      it "uses ActiveRecord's write_attribute and accepts a hash" do
+        subject.should_receive(:write_attribute).with(:some_field, "a=>b")
         subject.some_field = {:a => :b}
       end
 
@@ -61,20 +61,47 @@ describe Hstore do
       end
 
       it "can also accept a hstore string instead of a hash" do
-        subject.stub(:write_attribute)
+        subject.should_receive(:write_attribute).with(:some_field, "a=>b")
         subject.some_field = "a=>b"
       end
     end
   end
 
+  describe "reading attributes" do
+    before(:each) do
+      MyHstore.create( :label=> "A", :some_field => {"key" => "1"} )
+      MyHstore.create( :label=> "B", :some_field => "" )
+      MyHstore.create( :label=> "C", :some_field => nil )
+    end
+
+    it "should return a hash for label A" do
+      result = MyHstore.find_by_label("A")
+      result.label.should == "A"
+      result.some_field.should == {"key" => "1"}
+    end
+
+    it "should return an empty hash for label B (empty string passed in)" do
+      result = MyHstore.find_by_label("B")
+      result.label.should == "B"
+      result.some_field.should == {}
+    end
+
+   it "should return an empty hash for label C (nil passed in)" do
+      result = MyHstore.find_by_label("C")
+      result.label.should == "C"
+      result.some_field.should == {}
+    end
+
+  end
+
   describe "querying data" do
     before(:each) do
-      MyHstore.create( :label=> "A", :some_field => {"key" => "1"}.to_hstore )
-      MyHstore.create( :label=> "B", :some_field => {:key => 1, "a" => "b"}.to_hstore )
-      MyHstore.create( :label=> "C", :some_field => {"key" => "2"}.to_hstore )
-      MyHstore.create( :label=> "D", :some_field => {"key" => "3"}.to_hstore )
-      MyHstore.create( :label=> "E", :some_field => {"key" => "123456789"}.to_hstore )
-      MyHstore.create( :label=> "F", :some_field => {"c" => "x"}.to_hstore )
+      MyHstore.create( :label=> "A", :some_field => {"key" => "1"} )
+      MyHstore.create( :label=> "B", :some_field => {:key => 1, "a" => "b"} )
+      MyHstore.create( :label=> "C", :some_field => {"key" => "2"} )
+      MyHstore.create( :label=> "D", :some_field => {"key" => "3"} )
+      MyHstore.create( :label=> "E", :some_field => {"key" => "123456789"} )
+      MyHstore.create( :label=> "F", :some_field => {"c" => "x"} )
     end
 
     it "queries for the records containing a specific key" do
