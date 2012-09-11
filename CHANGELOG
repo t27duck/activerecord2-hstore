@@ -1,3 +1,6 @@
+1.0.5
+* Now correctly writes valid hstore syntax for PostgreSQL 9.2
+
 1.0.4
 * Better fix for passing in nil, string, or hash into ActiveRecord setter (@kwstannard)
 * Additional and improved specs
