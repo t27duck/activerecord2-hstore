@@ -94,6 +94,22 @@ describe Hstore do
 
   end
 
+  describe "setting attributes" do
+    it "should handle having an appostrophie in the key and value" do
+      result = MyHstore.create(:label => "Appos Test", :some_field => {"I'm happy" => "I'm also happy"})
+      result.some_field.should == {"I'm happy" => "I'm also happy"}
+      
+      result = MyHstore.create(:label => "Appos Test 2", :some_field => {"A'" => "A'"})
+      result.some_field.should == {"A'" => "A'"}
+      
+      result = MyHstore.create(:label => "Appos Test 3", :some_field => {"'" => "'"})
+      result.some_field.should == {"'" => "'"}
+
+      result = MyHstore.create(:label => "Appos Test 4", :some_field => {"'A" => "'A", "foo" => "bar"})
+      result.some_field.should == {"'A" => "'A", "foo" => "bar"}
+    end
+  end
+
   describe "querying data" do
     before(:each) do
       MyHstore.create( :label=> "A", :some_field => {"key" => "1"} )
