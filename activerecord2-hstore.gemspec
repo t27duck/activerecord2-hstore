@@ -22,5 +22,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", ">=2.0.0"
   s.add_runtime_dependency "activerecord", "~> 2.3.0"
   s.add_runtime_dependency "activesupport", "~> 2.3.0"
-  s.add_runtime_dependency "pg"
 end
