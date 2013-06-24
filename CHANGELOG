@@ -1,3 +1,6 @@
+1.0.6
+* Support for jruby (@sclasen)
+
 1.0.5
 * Now correctly writes valid hstore syntax for PostgreSQL 9.2
 

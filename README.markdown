@@ -16,7 +16,7 @@ This gem requires:
 *   ActiveRecord and ActiveSupport 2.3.x
 *   pg gem
 *   rspec (for running tests, duh)
-*   Ruby (Tested on 1.8.7 MRI, 1.9.2, and REE)
+*   Ruby (Tested on 1.8.7 MRI, 1.9.2, and REE. Should work on jruby.)
 *   Postgresql (Tested on 9.1)
 
 Setup (aka more boring stuff)
